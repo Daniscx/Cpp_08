@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 16:49:34 by dmaestro          #+#    #+#             */
-/*   Updated: 2026/04/20 16:29:56 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:10:12 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,33 +66,28 @@ unsigned int Span::diff_Span(bool(comp)(int ,int))
 {
     unsigned int diff;
        if(this->ct.size() == 1 || this->ct.empty())
-            throw(SpanFilled());    
+            throw(SpanFilled());
+        sort(ct.begin(), ct.end());    
        std::vector<int>::iterator first_value = this->ct.begin();
        std::vector<int>::iterator seconnd_value = first_value + 1;;
        std::vector<int>::iterator end = this->ct.end();
-       int neg = 0;
-       neg = *seconnd_value - *first_value;
-       if(neg < 0)
-        neg = neg *(-1);
-        diff = neg;
+       if(comp == more_than)
+            return(*ct.end() - *first_value);
+
+        diff =  *seconnd_value - *first_value;
         first_value++;
         seconnd_value++;
         for(;first_value != end; first_value++ , seconnd_value++)
         {
-               neg = *seconnd_value - *first_value;
-            if(neg < 0)
-            neg = neg *(-1);
-            if(comp(neg, diff))
-                diff = neg;
+            if(comp(*seconnd_value - *first_value, diff))
+                diff = *seconnd_value - *first_value;
         }
         return(diff);
 }
 
 unsigned int Span::shortestSpan()
 {
-       
-        return(diff_Span(less_than));
-       
+    return(diff_Span(less_than));   
 }
 unsigned int Span::longestSpan()
 {
